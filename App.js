@@ -6,45 +6,38 @@
  * @flow strict-local
  */
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native'
+import UserListScreen from './src/screens/UserListScreen'
+import UserDetailsScreen from './src/screens/UserDetailsScreen'
+import AddUserScreen from './src/screens/AddUserScreen'
 
 const App = () => {
 
+  const [users, setUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [inputUser, setInputUser] = useState(false)
+  const getUsers = async () => {
+    const response = await fetch('https://dummyjson.com/users')
+    const usersResponse = await response.json()
+    setUsers(usersResponse.users)
+  }
+
+  useEffect(()=> {
+    getUsers()
+  }, [])
+
   return (
-    <SafeAreaView>
-        <View>
-          <Text>Hello boss</Text>
-        </View>
-    </SafeAreaView>
+    <>
+      {inputUser ? <AddUserScreen setInputUser={setInputUser} setUsers={setUsers}/> :  selectedUser ? <UserDetailsScreen user={selectedUser} setUser={setSelectedUser}  /> : <UserListScreen setInputUser={setInputUser} users={users} setSelectedUser={setSelectedUser} />}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  
+})
 
 export default App;

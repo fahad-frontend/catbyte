@@ -6,7 +6,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 const UserDetailsScreen = (props) => {
     const {user, setUser} = props
     const address = user.address
-    console.log(user)
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>USER DETAILS</Text>

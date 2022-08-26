@@ -19,6 +19,7 @@ const App = () => {
   const [users, setUsers] = useState([])
   const [selectedUser, setSelectedUser] = useState(null)
   const [inputUser, setInputUser] = useState(false)
+
   const getUsers = async () => {
     const response = await fetch('https://dummyjson.com/users')
     const usersResponse = await response.json()
@@ -31,13 +32,13 @@ const App = () => {
 
   return (
     <>
-      {inputUser ? <AddUserScreen setInputUser={setInputUser} setUsers={setUsers}/> :  selectedUser ? <UserDetailsScreen user={selectedUser} setUser={setSelectedUser}  /> : <UserListScreen setInputUser={setInputUser} users={users} setSelectedUser={setSelectedUser} />}
+      {inputUser ? 
+        <AddUserScreen setInputUser={setInputUser} setUsers={setUsers}/> : selectedUser ? 
+          <UserDetailsScreen user={selectedUser} setUser={setSelectedUser}  /> : 
+            <UserListScreen setInputUser={setInputUser} users={users} setSelectedUser={setSelectedUser} />
+      }
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  
-})
 
 export default App;

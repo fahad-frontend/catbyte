@@ -30,7 +30,7 @@ const AddUserScreen = (props) => {
             <TextInput style={styles.inputField} value={state} onChangeText={(value) => setState(value)} />
             <Text>Image Url</Text>
             <TextInput style={styles.inputField} value={image} onChangeText={(value) => setImage(value)} />
-            <TouchableOpacity style={styles.submitButton} onPress={()=> {
+            {firstName && lastName && age && address && postalCode && state && image && <TouchableOpacity style={styles.submitButton} onPress={()=> {
                 setUsers(prev=> [...(prev || []), {
                     firstName,
                     lastName,
@@ -45,7 +45,7 @@ const AddUserScreen = (props) => {
                 setInputUser(false)
             }}>
                 <Text>Submit</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
         </View>
     );
 };

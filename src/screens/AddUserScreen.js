@@ -1,11 +1,14 @@
 //import liraries
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../redux/usersSlice'
 
 // create a component
-const AddUserScreen = (props) => {
+const AddUserScreen = ({navigation}) => {
 
-    const {setUsers, setInputUser} = props
+    const dispatch = useDispatch()
+
     const [firstName, setFirstname] = useState('')
     const [lastName, setLastName] = useState('')
     const [age, setAge] = useState('')
@@ -31,7 +34,7 @@ const AddUserScreen = (props) => {
             <Text>Image Url</Text>
             <TextInput style={styles.inputField} value={image} onChangeText={(value) => setImage(value)} />
             {firstName && lastName && age && address && postalCode && state && image && <TouchableOpacity style={styles.submitButton} onPress={()=> {
-                setUsers(prev=> [...(prev || []), {
+                dispatch(addUser({
                     firstName,
                     lastName,
                     age,
@@ -41,8 +44,8 @@ const AddUserScreen = (props) => {
                         state
                     },
                     image
-                }])
-                setInputUser(false)
+                }))
+                navigation.replace('UsersList')
             }}>
                 <Text>Submit</Text>
             </TouchableOpacity>}

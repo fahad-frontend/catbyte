@@ -3,8 +3,8 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 // create a component
-const UserDetailsScreen = (props) => {
-    const {user, setUser} = props
+const UserDetailsScreen = ({route, navigation}) => {
+    const {user} = route.params
     const address = user.address
     return (
         <View style={styles.container}>
@@ -13,7 +13,7 @@ const UserDetailsScreen = (props) => {
             <Text style={styles.addressDetails}>Name: {user.firstName+' '+user.lastName}</Text>
             <Text style={styles.addressDetails}>Age: {user.age}</Text>
             <Text style={styles.addressDetails}>Company Details: {address.address+', '+address.postalCode+', '+address.state}</Text>
-            <TouchableOpacity onPress={()=> setUser(null)} style={styles.backButton}>
+            <TouchableOpacity onPress={()=> navigation.replace('UsersList')} style={styles.backButton}>
                 <Text style={styles.backButtonText}>Go back</Text>
             </TouchableOpacity>
         </View>

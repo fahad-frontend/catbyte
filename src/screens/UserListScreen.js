@@ -1,17 +1,44 @@
 //import liraries
-import React, { Component } from 'react';
-import { Text, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useEffect } from 'react';
+import { Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { populateUsers } from '../redux/usersSlice'
 import UserTile from '../components/UserTile'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // create a component
-const UserListScreen = (props) => {
-    const {users, setSelectedUser, setInputUser} = props
+const UserListScreen = ({navigation}) => {
+    const {users} = useSelector(state=> state.users)
+    const dispatch = useDispatch()
+    const getUsers = async () => {
+        AsyncStorage.getItem('users').then(async val=> {
+            const asyncStorageUsers = JSON.parse(val)
+            if (asyncStorageUsers?.length>0){
+                console.log('asyncstorage')
+                dispatch(populateUsers(asyncStorageUsers))
+            } else {
+                console.log('first fetch')
+                const response = await fetch('https://dummyjson.com/users')
+                const usersResponse = await response.json()
+                dispatch(populateUsers(usersResponse.users))
+                
+            }
+        })
+    }
+
+    useEffect(()=> {
+        users.length===0 && getUsers()
+    }, [])
+
     return (
         <ScrollView>
-            {users.length>0 && users.map((user, index)=> <UserTile key={index} setUser={setSelectedUser} user={user} />)}
-            <TouchableOpacity onPress={()=> setInputUser(true)} style={styles.addUserButton}>
-                <Text style={styles.addUserText}>Add User</Text>
-            </TouchableOpacity>
+            {users.length>0 && 
+            <>
+                {users.map((user, index)=> <UserTile key={index} user={user} navigation={navigation}/>)}
+                <TouchableOpacity onPress={()=> navigation.navigate('AddUser')} style={styles.addUserButton}>
+                    <Text style={styles.addUserText}>Add User</Text>
+                </TouchableOpacity>
+            </>}
         </ScrollView>
     )
 };
